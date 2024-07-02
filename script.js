@@ -15,23 +15,20 @@ window.addEventListener("load", () => {
   function drawUI() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw title text
-    drawText("florr.io", canvas.width / 2, 100, "50px 'Ubuntu'", "#fff", "center", true);
-
-    // Draw name input box
-    drawBox(ctx, canvas.width / 2 - 100, 200, 200, 50, "#fff", "#000", "Kosuken");
-
-    // Draw buttons
-    drawButton(ctx, canvas.width / 2 - 60, 300, 120, 50, "Ready", "#4CAF50", "#fff");
-    drawButton(ctx, canvas.width / 2 - 200, 400, 100, 50, "Garden", "#f0e68c", "#000");
-    drawButton(ctx, canvas.width / 2 - 50, 400, 100, 50, "Desert", "#f4a460", "#000");
-    drawButton(ctx, canvas.width / 2 + 100, 400, 100, 50, "Ocean", "#87ceeb", "#000");
-    drawButton(ctx, canvas.width / 2 - 200, 500, 100, 50, "Jungle", "#98fb98", "#000");
-    drawButton(ctx, canvas.width / 2 - 50, 500, 100, 50, "Hel", "#dc143c", "#fff");
+    // Draw container with text
+    drawContainerWithText(
+      ctx,
+      canvas.width / 2 - 150, // x position
+      canvas.height / 2 - 50, // y position
+      300,                    // width
+      100,                    // height
+      "#4CAF50",              // container color
+      "Dps optimiser"         // text
+    );
   }
 
   // Function to draw text
-  function drawText(text, x, y, font, color, align = "center", outline = false) {
+  function drawText(ctx, text, x, y, font, color, align = "center", outline = false) {
     ctx.font = font;
     ctx.fillStyle = color;
     ctx.textAlign = align;
@@ -43,24 +40,47 @@ window.addEventListener("load", () => {
     }
   }
 
-  // Function to draw a box (input box for name)
-  function drawBox(ctx, x, y, width, height, bgColor, textColor, text) {
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(x, y, width, height);
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(x, y, width, height);
-    drawText(text, x + width / 2, y + height / 2 + 10, "20px 'Ubuntu'", textColor, "center");
+  // Function to darken a hex color
+  function darkenColor(color, percent) {
+    const num = parseInt(color.slice(1), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = (num >> 16) - amt;
+    const G = ((num >> 8) & 0x00FF) - amt;
+    const B = (num & 0x0000FF) - amt;
+    return `#${(
+      0x1000000 +
+      (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
+      (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
+      (B < 255 ? (B < 1 ? 0 : B) : 255)
+    )
+      .toString(16)
+      .slice(1)}`;
   }
 
-  // Function to draw a button
-  function drawButton(ctx, x, y, width, height, text, bgColor, textColor) {
+  // Function to draw a container with text
+  function drawContainerWithText(ctx, x, y, width, height, bgColor, text) {
+    const outlineColor = darkenColor(bgColor, 40);
+
+    // Draw container
     ctx.fillStyle = bgColor;
     ctx.fillRect(x, y, width, height);
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
+
+    // Draw container outline
+    ctx.strokeStyle = outlineColor;
+    ctx.lineWidth = 5;
     ctx.strokeRect(x, y, width, height);
-    drawText(text, x + width / 2, y + height / 2 + 10, "20px 'Ubuntu'", textColor, "center");
+
+    // Draw text
+    drawText(
+      ctx,
+      text,
+      x + width / 2,
+      y + height / 2 + 10, // Adjusted for centering text vertically
+      "30px 'Ubuntu'",
+      "#fff",
+      "center",
+      true
+    );
   }
 
   // Ensure the font is loaded before drawing
