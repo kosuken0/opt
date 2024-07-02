@@ -1,64 +1,68 @@
 window.addEventListener("load", () => {
-  const canvas = document.getElementById("test");
+  const canvas = document.getElementById("main");
   const ctx = canvas.getContext("2d");
 
   // Resize canvas to fill the whole screen
   function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    drawUI();
   }
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 
-  function drawRectangle() {
-    ctx.fillStyle = 'blue';
-    ctx.fillRect(50, 50, 150, 100);
-  }
-
-  function drawCircle() {
-    ctx.beginPath();
-    ctx.arc(250, 250, 50, 0, Math.PI * 2, true);
-    ctx.fillStyle = 'green';
-    ctx.fill();
-    ctx.closePath();
-  }
-
-  function clearCanvas() {
+  // Function to draw the UI elements
+  function drawUI() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw title text
+    drawText("florr.io", canvas.width / 2, 100, "50px 'Ubuntu'", "#fff", "center", true);
+
+    // Draw name input box
+    drawBox(ctx, canvas.width / 2 - 100, 200, 200, 50, "#fff", "#000", "Kosuken");
+
+    // Draw buttons
+    drawButton(ctx, canvas.width / 2 - 60, 300, 120, 50, "Ready", "#4CAF50", "#fff");
+    drawButton(ctx, canvas.width / 2 - 200, 400, 100, 50, "Garden", "#f0e68c", "#000");
+    drawButton(ctx, canvas.width / 2 - 50, 400, 100, 50, "Desert", "#f4a460", "#000");
+    drawButton(ctx, canvas.width / 2 + 100, 400, 100, 50, "Ocean", "#87ceeb", "#000");
+    drawButton(ctx, canvas.width / 2 - 200, 500, 100, 50, "Jungle", "#98fb98", "#000");
+    drawButton(ctx, canvas.width / 2 - 50, 500, 100, 50, "Hel", "#dc143c", "#fff");
   }
 
-  function drawText() {
-    const text = prompt("Enter text:");
-    ctx.font = "20px Arial";
-    ctx.fillStyle = "red";
-    ctx.fillText(text, 200, 400);
+  // Function to draw text
+  function drawText(text, x, y, font, color, align = "center", outline = false) {
+    ctx.font = font;
+    ctx.fillStyle = color;
+    ctx.textAlign = align;
+    ctx.fillText(text, x, y);
+    if (outline) {
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 2;
+      ctx.strokeText(text, x, y);
+    }
   }
 
-  // Create buttons dynamically
-  function createButton(text, onClick) {
-    const button = document.createElement("button");
-    button.innerText = text;
-    button.style.position = "absolute";
-    button.style.zIndex = 10; // Ensure the button is above the canvas
-    document.body.appendChild(button);
-    button.addEventListener("click", onClick);
-    return button;
+  // Function to draw a box (input box for name)
+  function drawBox(ctx, x, y, width, height, bgColor, textColor, text) {
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(x, y, width, height);
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x, y, width, height);
+    drawText(text, x + width / 2, y + height / 2 + 10, "20px 'Ubuntu'", textColor, "center");
   }
 
-  // Position buttons
-  const drawRectButton = createButton("Draw Rectangle", drawRectangle);
-  drawRectButton.style.top = "10px";
-  drawRectButton.style.left = "10px";
+  // Function to draw a button
+  function drawButton(ctx, x, y, width, height, text, bgColor, textColor) {
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(x, y, width, height);
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x, y, width, height);
+    drawText(text, x + width / 2, y + height / 2 + 10, "20px 'Ubuntu'", textColor, "center");
+  }
 
-  const drawCircleButton = createButton("Draw Circle", drawCircle);
-  drawCircleButton.style.top = "10px";
-  drawCircleButton.style.left = "150px";
-
-  const clearCanvasButton = createButton("Clear Canvas", clearCanvas);
-  clearCanvasButton.style.top = "10px";
-  clearCanvasButton.style.left = "290px";
-
-  const drawTextButton = createButton("Draw Text", drawText);
-  drawTextButton.style.top = "10px";
-  drawTextButton.style.left = "430px";
+  // Ensure the font is loaded before drawing
+  document.fonts.load("10px 'Ubuntu'").then(drawUI);
 });
