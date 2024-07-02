@@ -22,7 +22,7 @@ window.addEventListener("load", () => {
       canvas.height / 2 - 50, // y position
       300,                    // width
       100,                    // height
-      "#4CAF50",              // container color
+      "#2bffa3",              // container color
       "Dps optimiser"         // text
     );
   }
@@ -77,7 +77,7 @@ window.addEventListener("load", () => {
       x + width / 2,
       y + height / 2 + 10, // Adjusted for centering text vertically
       "30px 'Ubuntu'",
-      "#fff",
+      "#ffffff",
       "center",
       true
     );
