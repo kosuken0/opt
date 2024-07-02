@@ -4,13 +4,21 @@
     <meta charset="utf-8" />
     <title>dps optimiser (someday)</title>
     <style>
+      body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
       canvas {
         border: 10px solid #2bffa3;
+        display: block; /* Prevent scrollbars */
       }
     </style>
   </head>
   <body>
-    <canvas id="test" width="800" height="600"></canvas>
+    <canvas id="test"></canvas>
     <script src="script.js"></script>
   </body>
 </html>
