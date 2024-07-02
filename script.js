@@ -20,13 +20,15 @@ img.onload = function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Calculate dimensions with border
+    const borderWidth = 20;
+    const canvasWidthMinusBorder = canvas.width - borderWidth * 2;
+    const canvasHeightMinusBorder = canvas.height - borderWidth * 2;
 
-    // Calculate scale to fit the image within the canvas
-    const scaleX = canvas.width / img.width;
-    const scaleY = canvas.height / img.height;
-    const scale = Math.max(scaleX, scaleY);
+    // Calculate scale to fit the image within the canvas (keeping aspect ratio)
+    const scaleX = canvasWidthMinusBorder / img.width;
+    const scaleY = canvasHeightMinusBorder / img.height;
+    const scale = Math.min(scaleX, scaleY);
 
     // Calculate scaled dimensions
     const scaledWidth = img.width * scale;
@@ -35,6 +37,9 @@ img.onload = function() {
     // Calculate position to center the scaled image on the canvas
     const x = (canvas.width - scaledWidth) / 2;
     const y = (canvas.height - scaledHeight) / 2;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw the scaled image onto the canvas
     ctx.drawImage(img, x, y, scaledWidth, scaledHeight);
@@ -72,7 +77,7 @@ img.onload = function() {
     ctx.arcTo(x, y, x + cornerRadius, y, cornerRadius);
     ctx.closePath();
 
-    ctx.lineWidth = 10;
+    ctx.lineWidth = borderWidth;
     ctx.strokeStyle = avgColor;
     ctx.stroke();
   }
