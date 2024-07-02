@@ -20,14 +20,14 @@ img.onload = function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Calculate dimensions with padding
-    const padding = 20;
-    const canvasWidthMinusPadding = canvas.width - padding * 2;
-    const canvasHeightMinusPadding = canvas.height - padding * 2;
+    // Calculate dimensions with border
+    const borderWidth = 20;
+    const canvasWidthMinusBorder = canvas.width - borderWidth * 2;
+    const canvasHeightMinusBorder = canvas.height - borderWidth * 2;
 
-    // Calculate scale to fit the image within the canvas with padding (keeping aspect ratio)
-    const scaleX = canvasWidthMinusPadding / img.width;
-    const scaleY = canvasHeightMinusPadding / img.height;
+    // Calculate scale to fit the image within the canvas (keeping aspect ratio)
+    const scaleX = canvasWidthMinusBorder / img.width;
+    const scaleY = canvasHeightMinusBorder / img.height;
     const scale = Math.min(scaleX, scaleY);
 
     // Calculate scaled dimensions
@@ -65,22 +65,16 @@ img.onload = function() {
 
     // Draw an outline with rounded corners using paths
     const cornerRadius = 10; // Adjust as needed
-    const borderWidth = 10; // Adjust as needed
-
     ctx.beginPath();
-    // Top left corner
-    ctx.moveTo(x + cornerRadius + borderWidth, y + borderWidth);
-    ctx.arcTo(x + borderWidth, y + borderWidth, x + borderWidth, y + cornerRadius + borderWidth, cornerRadius);
-    // Top right corner
-    ctx.lineTo(x + scaledWidth - cornerRadius - borderWidth, y + borderWidth);
-    ctx.arcTo(x + scaledWidth - borderWidth, y + borderWidth, x + scaledWidth - borderWidth, y + cornerRadius + borderWidth, cornerRadius);
-    // Bottom right corner
-    ctx.lineTo(x + scaledWidth - borderWidth, y + scaledHeight - cornerRadius - borderWidth);
-    ctx.arcTo(x + scaledWidth - borderWidth, y + scaledHeight - borderWidth, x + scaledWidth - cornerRadius - borderWidth, y + scaledHeight - borderWidth, cornerRadius);
-    // Bottom left corner
-    ctx.lineTo(x + cornerRadius + borderWidth, y + scaledHeight - borderWidth);
-    ctx.arcTo(x + borderWidth, y + scaledHeight - borderWidth, x + borderWidth, y + scaledHeight - cornerRadius - borderWidth, cornerRadius);
-    // Complete path
+    ctx.moveTo(x + cornerRadius, y);
+    ctx.lineTo(x + scaledWidth - cornerRadius, y);
+    ctx.arcTo(x + scaledWidth, y, x + scaledWidth, y + cornerRadius, cornerRadius);
+    ctx.lineTo(x + scaledWidth, y + scaledHeight - cornerRadius);
+    ctx.arcTo(x + scaledWidth, y + scaledHeight, x + scaledWidth - cornerRadius, y + scaledHeight, cornerRadius);
+    ctx.lineTo(x + cornerRadius, y + scaledHeight);
+    ctx.arcTo(x, y + scaledHeight, x, y + scaledHeight - cornerRadius, cornerRadius);
+    ctx.lineTo(x, y + cornerRadius);
+    ctx.arcTo(x, y, x + cornerRadius, y, cornerRadius);
     ctx.closePath();
 
     ctx.lineWidth = borderWidth;
