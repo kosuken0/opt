@@ -1,5 +1,5 @@
 window.addEventListener("load", () => {
-  const canvas = document.getElementById("tutorial");
+  const canvas = document.getElementById("test");
   const ctx = canvas.getContext("2d");
 
   function drawRectangle() {
